@@ -48,7 +48,8 @@ function styleFor(feature){
  const relevant=filter==="all"||filter==="sun-all"||filter==="line-all"||(filter==="left"&&side==="left")||(filter==="right"&&side==="right")||(filter==="north"&&sun==="north")||(filter==="south"&&sun==="south")||(filter==="equatorial"&&sun==="equatorial")||(filter==="line-white"&&lineCategory==="white")||(filter==="line-yellow"&&lineCategory==="yellow")||(filter==="line-both"&&lineCategory==="both");
  return {color:lineMode?"#52656d":"#d7e1e4",weight:lineMode?1.05:.75,fillColor:color,fillOpacity:relevant?0.9:0.48,opacity:1};
 }
-function updateLegend(){}\nfunction setFilter(next){
+function updateLegend(){}
+function setFilter(next){
  filter=next;
  document.querySelectorAll(".map-filter").forEach(b=>{const active=b.dataset.filter===filter;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
  geoLayers.forEach(layer=>layer.setStyle(styleFor));
