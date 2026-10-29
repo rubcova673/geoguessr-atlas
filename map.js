@@ -46,7 +46,7 @@ function styleFor(feature){
  const lineCategory=centerLineCategory(c&&c.code);
  const color=lineMode?({white:"#f5f5f5",yellow:"#f3c928",both:"#e4a14b",unknown:"#aebcc0"}[lineCategory]||"#aebcc0"):sunMode?({north:"#d48b32",south:"#0e8b78",equatorial:"#9b75c9",unknown:"#aebcc0"}[sun]||"#aebcc0"):({left:"#1f5a9d",right:"#cf3838",unknown:"#aebcc0"}[side]||"#aebcc0");
  const relevant=filter==="all"||filter==="sun-all"||filter==="line-all"||(filter==="left"&&side==="left")||(filter==="right"&&side==="right")||(filter==="north"&&sun==="north")||(filter==="south"&&sun==="south")||(filter==="equatorial"&&sun==="equatorial")||(filter==="line-white"&&lineCategory==="white")||(filter==="line-yellow"&&lineCategory==="yellow")||(filter==="line-both"&&lineCategory==="both");
- return {color:lineMode?"#687980":"#d7e1e4",weight:lineMode?0.8:.65,fillColor:color,fillOpacity:relevant?0.9:0.1,opacity:relevant?1:0.35};
+ return {color:lineMode?"#52656d":"#d7e1e4",weight:lineMode?1.05:.75,fillColor:color,fillOpacity:relevant?0.9:0.48,opacity:1};
 }
 function updateLegend(){
  const el=document.querySelector(".map-legend");
