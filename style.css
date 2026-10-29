@@ -35,3 +35,21 @@
 \n.clue-photo-wrap{height:145px;margin:14px -19px -19px;position:relative;overflow:hidden;border-radius:0 0 12px 12px;background:#0b151c}.clue-photo{width:100%;height:100%;display:block;object-fit:cover}.photo-credit{position:absolute;right:6px;bottom:5px;background:rgba(0,0,0,.65);padding:3px 5px;border-radius:4px;font-size:9px}.photo-credit a{color:#fff;text-decoration:none}.clue-card p{overflow-wrap:anywhere}@media(max-width:850px){.clue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.clue-photo-wrap{height:125px}}@media(max-width:520px){.clue-grid{grid-template-columns:1fr}.clue-photo-wrap{height:180px}}\n.map-error{position:absolute;z-index:500;left:12px;bottom:12px;max-width:360px;background:rgba(11,18,24,.92);border:1px solid #344954;color:#edf5f6;border-radius:9px;padding:10px 13px;font-size:12px;line-height:1.5}#mapCanvas{position:relative}
 /* Center-line colour map filter */
 .filter-dot.line-white,.legend-swatch.line-white{background:#f5f5f5;border:1px solid #73828a;box-sizing:border-box}.filter-dot.line-yellow,.legend-swatch.line-yellow{background:#f3c928}.filter-dot.line-both,.legend-swatch.line-both{background:#e4a14b}
+
+/* Country comparison */
+.compare-pickers{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr);gap:12px;align-items:end;margin:20px 0 14px}
+.compare-pickers label{display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:12px}
+.compare-pickers select{width:100%;min-width:0;background:#111e27;border:1px solid #2c414d;border-radius:10px;padding:13px 12px;color:var(--text);font:inherit;font-size:13px}
+.swap-button,.secondary-button{background:#1b2b35;border:1px solid #344954;color:var(--text);border-radius:9px;padding:11px 13px;cursor:pointer}
+.swap-button{font-size:22px;color:var(--mint);height:44px}.swap-button:hover,.secondary-button:hover{border-color:var(--mint)}
+.compare-actions{display:flex;align-items:center;gap:14px;margin:12px 0 22px}.compare-actions p{margin:0}
+.compare-country-head{display:grid;grid-template-columns:1fr 54px 1fr;align-items:center;gap:12px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:0}
+.compare-country-head>div:not(.versus){display:flex;align-items:center;gap:14px;min-width:0}.compare-country-head>div:last-child{justify-content:flex-end}
+.compare-country-head img{width:72px;height:48px;object-fit:contain}.compare-country-head h3{font-size:17px;margin:0}.versus{text-align:center;font-size:11px;letter-spacing:1px;color:var(--mint);font-weight:800}
+.compare-table-head,.compare-row{display:grid;grid-template-columns:minmax(125px,.75fr) minmax(0,1.2fr) minmax(0,1.2fr);gap:14px}
+.compare-table-head{padding:14px 0;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line)}
+.compare-row{padding:16px 0;border-bottom:1px solid var(--line);align-items:start}
+.compare-feature{display:flex;flex-direction:column;gap:7px}.compare-feature>span{font-size:19px;color:var(--mint)}.compare-feature b{font-size:13px}.compare-feature small{font-size:10px}.compare-feature small.diff{color:#8ce0c0}.compare-feature small.same{color:#91a5ad}
+.compare-value{font-size:12px;line-height:1.75;color:#d2e0e4;overflow-wrap:anywhere}
+.compare-note{margin-top:18px}
+@media(max-width:650px){.compare-pickers{grid-template-columns:minmax(0,1fr) 38px minmax(0,1fr);gap:7px}.compare-pickers select{font-size:11px;padding:11px 7px}.compare-country-head{grid-template-columns:1fr 32px 1fr;gap:6px}.compare-country-head>div:not(.versus){flex-direction:column;align-items:flex-start;gap:8px}.compare-country-head>div:last-child{align-items:flex-end}.compare-country-head img{width:58px;height:38px}.compare-country-head h3{font-size:14px}.compare-table-head,.compare-row{grid-template-columns:1fr 1fr;gap:10px}.compare-table-head span:first-child{display:none}.compare-row .compare-feature{grid-column:1/-1;flex-direction:row;align-items:center;flex-wrap:wrap}.compare-feature>span{font-size:16px}.compare-feature small{margin-left:auto}.compare-table-head{font-size:10px}.compare-value{font-size:11px}.compare-actions{align-items:flex-start;flex-direction:column}}
