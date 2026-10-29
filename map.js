@@ -5,11 +5,26 @@ const byCode=code=>COUNTRIES.find(c=>c.code===String(code||"").toLowerCase());
 const left=new Set(FALLBACK_DRIVING.leftDriving.map(x=>x.toLowerCase()));
 let filter="all", geoLayer, map;
 const canvas=document.querySelector("#mapCanvas");
+function latitudeRange(coords,range=[Infinity,-Infinity]){
+ if(!Array.isArray(coords))return range;
+ if(typeof coords[0]==="number"&&typeof coords[1]==="number"){range[0]=Math.min(range[0],coords[1]);range[1]=Math.max(range[1],coords[1]);return range;}
+ for(const item of coords)latitudeRange(item,range);
+ return range;
+}
+function hemisphereFor(feature){
+ const geometry=feature.geometry;
+ if(!geometry||!geometry.coordinates)return "unknown";
+ const [minLat,maxLat]=latitudeRange(geometry.coordinates);
+ if(!Number.isFinite(minLat)||!Number.isFinite(maxLat))return "unknown";
+ if(minLat<=0&&maxLat>=0)return "equatorial";
+ return maxLat<0?"south":"north";
+}
 function countryFor(feature){
  const p=feature.properties||{};
  const name=p.ADMIN||p.NAME_EN||p.NAME||p.name||"Country";
  const code=(p.ISO_A2&&p.ISO_A2!=="-99"?p.ISO_A2:p.ISO_A2_EH||p.iso_a2||"").toLowerCase();
- return {name,code,country:byCode(code)||COUNTRIES.find(c=>c.en.toLowerCase()===name.toLowerCase())};
+ const country=byCode(code)||COUNTRIES.find(c=>c.en.toLowerCase()===name.toLowerCase());
+ return {name,code,country:country?{...country,hemisphere:hemisphereFor(feature)}:null};
 }
 function sunCategory(country){
  if(!country)return "unknown";
@@ -40,12 +55,12 @@ document.querySelectorAll(".map-filter").forEach(b=>b.addEventListener("click",(
 if(!window.L){
  canvas.innerHTML='<div class="map-loading">Не удалось загрузить библиотеку карты. Проверь доступ к unpkg.com или jsDelivr.</div>';
 }else{
- map=L.map("mapCanvas",{worldCopyJump:true,zoomControl:false,minZoom:2,maxZoom:9,preferCanvas:true}).setView([20,0],2);
+ map=L.map("mapCanvas",{worldCopyJump:true,zoomControl:false,minZoom:1,maxZoom:9,preferCanvas:true}).setView([15,0],1);
  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors",maxZoom:9,subdomains:"abc"}).addTo(map);
  L.control.zoom({position:"topright"}).addTo(map);
  document.querySelector("#zoomIn").onclick=()=>map.zoomIn();
  document.querySelector("#zoomOut").onclick=()=>map.zoomOut();
- document.querySelector("#resetMap").onclick=()=>{map.closePopup();map.setView([20,0],2);setFilter("all");};
+ document.querySelector("#resetMap").onclick=()=>{map.closePopup();map.setView([15,0],1);setFilter("all");};
  fetch("./data/world.geojson").then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json();}).then(data=>{
   document.querySelector(".map-loading")?.remove();
   geoLayer=L.geoJSON(data,{style:styleFor,onEachFeature:(feature,layer)=>{
