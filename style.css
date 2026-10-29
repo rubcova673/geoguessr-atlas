@@ -29,3 +29,6 @@
 .map-legend{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 14px;color:var(--muted);font-size:11px;}
 .map-legend span{display:inline-flex;align-items:center;gap:6px;}
 @media(max-width:560px){.map-filterbar{gap:6px}.map-filter{padding:9px 10px;font-size:11px}.map-legend{gap:9px;font-size:10px}}
+
+/* Sun and country clue filters */
+.map-filter-groups{display:grid;gap:13px;margin:0 0 13px}.filter-group{display:flex;flex-direction:column;gap:7px}.filter-group-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.4px}.map-filterbar{display:flex;flex-wrap:wrap;gap:8px;margin:0}.filter-dot.north,.legend-swatch.north{background:#d48b32}.filter-dot.south,.legend-swatch.south{background:#0e8b78}.filter-dot.equatorial,.legend-swatch.equatorial{background:#9b75c9}.map-legend{gap:10px 14px}
