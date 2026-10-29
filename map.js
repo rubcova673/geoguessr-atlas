@@ -37,7 +37,7 @@ function styleFor(feature){
  const sunMode=["sun-all","north","south","equatorial"].includes(filter);
  const color=sunMode?({north:"#d48b32",south:"#0e8b78",equatorial:"#9b75c9",unknown:"#aebcc0"}[sun]||"#aebcc0"):({left:"#1f5a9d",right:"#cf3838",unknown:"#aebcc0"}[side]||"#aebcc0");
  const relevant=filter==="all"||filter==="sun-all"||(filter==="left"&&side==="left")||(filter==="right"&&side==="right")||(filter==="north"&&sun==="north")||(filter==="south"&&sun==="south")||(filter==="equatorial"&&sun==="equatorial");
- return {color:"#d7e1e4",weight:.65,fillColor:color,fillOpacity:relevant?0.9:0.1,opacity:relevant?1:0.35};
+ return {color:lineMode?"#687980":"#d7e1e4",weight:lineMode?0.8:.65,fillColor:color,fillOpacity:relevant?0.9:0.1,opacity:relevant?1:0.35};
 }
 function updateLegend(){
  const el=document.querySelector(".map-legend");
