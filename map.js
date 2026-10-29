@@ -3,7 +3,7 @@ const FALLBACK_DRIVING={leftDriving:["AG","AI","AU","BS","BB","BD","BM","BT","BW
 const COUNTRIES=FALLBACK_COUNTRIES.map(([code,ru,en,continent])=>({code,ru,en,continent,hemisphere:["au","ar","bo","br","cl","fj","id","mg","mz","na","nz","py","pe","za","uy"].includes(code)?"south":(["ec","ga","cg","cd","ug","ke","so","id","ki","br"].includes(code)?"equatorial":"north")}));
 const CENTER_LINE_COLORS={
  yellow:new Set("us ca mx gt bz sv hn ni cr pa cu do jm ht ag kn lc vc gd bb tt bs br ar bo py uy pe ec co ve gy sr gf cl kr no ph cn ke rw".split(" ")),
- white:new Set("gb ie nl fr de be lu ch at it es pt pl cz sk hu ro bg gr se dk is ee lv lt ua by ru au il hk in pk bd lk th my sg tr ma dz tn eg sn gh bw sz ls na za mw mz tz zm zw ng".split(" ")),
+ white:new Set("gb ie nl fr de be lu ch at it es pt pl cz sk hu ro bg gr se dk is ee lv lt ua by ru au il hk in tr sn gh bw sz ls na za mw mz tz zm zw tn".split(" ")),
  both:new Set("jp fi nz ar uy ph".split(" "))
 };
 function centerLineCategory(code){const c=String(code||"").toLowerCase();if(CENTER_LINE_COLORS.both.has(c))return "both";if(CENTER_LINE_COLORS.yellow.has(c))return "yellow";if(CENTER_LINE_COLORS.white.has(c))return "white";return "unknown";}
