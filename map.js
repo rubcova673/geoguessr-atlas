@@ -10,7 +10,7 @@ function centerLineCategory(code){const c=String(code||"").toLowerCase();if(CENT
 function centerLineLabel(code){return ({yellow:"Обычно жёлтая центральная линия",white:"Обычно белая центральная линия",both:"Цвет зависит от ситуации: встречаются белая и жёлтая",unknown:"Нет достаточно надёжных данных"})[centerLineCategory(code)];}
 const byCode=code=>COUNTRIES.find(c=>c.code===String(code||"").toLowerCase());
 const left=new Set(FALLBACK_DRIVING.leftDriving.map(x=>x.toLowerCase()));
-let filter="all", geoLayer, map;
+let filter="all", geoLayers=[], map;
 const canvas=document.querySelector("#mapCanvas");
 function latitudeRange(coords,range=[Infinity,-Infinity]){
  if(!Array.isArray(coords))return range;
@@ -58,7 +58,7 @@ function updateLegend(){
 function setFilter(next){
  filter=next;
  document.querySelectorAll(".map-filter").forEach(b=>{const active=b.dataset.filter===filter;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
- if(geoLayer)geoLayer.setStyle(styleFor);
+ geoLayers.forEach(layer=>layer.setStyle(styleFor));
  updateLegend();
 }
 document.querySelectorAll(".map-filter").forEach(b=>b.addEventListener("click",()=>setFilter(b.dataset.filter)));
@@ -73,19 +73,32 @@ if(!window.L){
  document.querySelector("#resetMap").onclick=()=>{map.closePopup();map.setView([15,0],1);setFilter("all");};
  fetch("./data/world.geojson").then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json();}).then(data=>{
   document.querySelector(".map-loading")?.remove();
-  geoLayer=L.geoJSON(data,{style:styleFor,onEachFeature:(feature,layer)=>{
-   const found=countryFor(feature), c=found.country, name=found.name;
-   layer.bindTooltip(c?c.ru:name,{sticky:true});
-   layer.on({mouseover:e=>e.target.setStyle({weight:1.5,color:"#f2f8f7",fillOpacity:1}),mouseout:e=>geoLayer.resetStyle(e.target),click:e=>{
-    map.closePopup();
-    if(!c){L.popup({maxWidth:260}).setLatLng(e.latlng).setContent('<div class="map-pop"><b>'+name+'</b><p>Профиль этой территории пока не добавлен.</p></div>').openOn(map);return;}
-    const sun=c.hemisphere==="north"?"Солнце в полдень обычно на юге":c.hemisphere==="south"?"Солнце в полдень обычно на севере":c.hemisphere==="equatorial"?"Экваториальная зона":"Полушарие не определено";
-    const side=left.has(c.code)?"Левостороннее движение":"Правостороннее движение";
-    const line=centerLineLabel(c.code);
-    const pop='<div class="map-pop"><img class="map-pop-flag" src="https://flagcdn.com/w160/'+c.code+'.png" alt="Флаг '+c.ru+'"><div class="map-pop-info"><b>'+c.ru+'</b><span>'+c.en+'</span><small>'+c.continent+'</small><small>'+side+'</small><small>'+sun+'</small><a href="country.html?code='+encodeURIComponent(c.code)+'">Открыть профиль страны →</a></div></div>';
-    L.popup({maxWidth:320,minWidth:250,closeButton:true,autoPan:true,keepInView:true}).setLatLng(e.latlng).setContent(pop).openOn(map);
-   }});
-  }}).addTo(map);
+  function shiftLongitudes(value,offset){
+   if(!Array.isArray(value))return value;
+   if(typeof value[0]==="number"&&typeof value[1]==="number")return [value[0]+offset,value[1],...value.slice(2)];
+   return value.map(item=>shiftLongitudes(item,offset));
+  }
+  function shiftedFeatureCollection(collection,offset){
+   return {...collection,features:collection.features.map(feature=>({...feature,geometry:feature.geometry?{...feature.geometry,coordinates:shiftLongitudes(feature.geometry.coordinates,offset)}:feature.geometry}))};
+  }
+  [-360,0,360].forEach(offset=>{
+   const copy=shiftedFeatureCollection(data,offset);
+   let worldLayer;
+   worldLayer=L.geoJSON(copy,{style:styleFor,onEachFeature:(feature,layer)=>{
+    const found=countryFor(feature), c=found.country, name=found.name;
+    layer.bindTooltip(c?c.ru:name,{sticky:true});
+    layer.on({mouseover:e=>e.target.setStyle({weight:1.5,color:"#f2f8f7",fillOpacity:1}),mouseout:e=>worldLayer.resetStyle(e.target),click:e=>{
+     map.closePopup();
+     if(!c){L.popup({maxWidth:260}).setLatLng(e.latlng).setContent('<div class="map-pop"><b>'+name+'</b><p>Профиль этой территории пока не добавлен.</p></div>').openOn(map);return;}
+     const sun=c.hemisphere==="north"?"Солнце в полдень обычно на юге":c.hemisphere==="south"?"Солнце в полдень обычно на севере":c.hemisphere==="equatorial"?"Экваториальная зона":"Полушарие не определено";
+     const side=left.has(c.code)?"Левостороннее движение":"Правостороннее движение";
+     const line=centerLineLabel(c.code);
+     const pop='<div class="map-pop"><img class="map-pop-flag" src="https://flagcdn.com/w160/'+c.code+'.png" alt="Флаг '+c.ru+'"><div class="map-pop-info"><b>'+c.ru+'</b><span>'+c.en+'</span><small>'+c.continent+'</small><small>'+side+'</small><small>'+sun+'</small><small>'+line+'</small><a href="country.html?code='+encodeURIComponent(c.code)+'">Открыть профиль страны →</a></div></div>';
+     L.popup({maxWidth:320,minWidth:250,closeButton:true,autoPan:true,keepInView:true}).setLatLng(e.latlng).setContent(pop).openOn(map);
+    }});
+   }}).addTo(map);
+   geoLayers.push(worldLayer);
+  });
   setFilter("all");
  }).catch(err=>{console.error("GeoJSON map load failed",err);canvas.innerHTML='<div class="map-loading">Не загрузились границы стран. Обнови страницу или проверь доступ к data/world.geojson.</div>';});
 }
