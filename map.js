@@ -65,8 +65,8 @@ document.querySelectorAll(".map-filter").forEach(b=>b.addEventListener("click",(
 if(!window.L){
  canvas.innerHTML='<div class="map-loading">Не удалось загрузить библиотеку карты. Проверь доступ к unpkg.com или jsDelivr.</div>';
 }else{
- map=L.map("mapCanvas",{worldCopyJump:true,zoomControl:false,minZoom:1,maxZoom:9,preferCanvas:true}).setView([15,0],1);
- L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors",maxZoom:9,subdomains:"abc"}).addTo(map);
+ map=L.map("mapCanvas",{worldCopyJump:false,zoomControl:false,minZoom:1,maxZoom:9,preferCanvas:true,maxBounds:[[-85,-180],[85,180]],maxBoundsViscosity:1}).setView([15,0],1);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors",maxZoom:9,subdomains:"abc",noWrap:true,bounds:[[-85,-180],[85,180]]}).addTo(map);
  L.control.zoom({position:"topright"}).addTo(map);
  document.querySelector("#zoomIn").onclick=()=>map.zoomIn();
  document.querySelector("#zoomOut").onclick=()=>map.zoomOut();
@@ -81,7 +81,7 @@ if(!window.L){
   function shiftedFeatureCollection(collection,offset){
    return {...collection,features:collection.features.map(feature=>({...feature,geometry:feature.geometry?{...feature.geometry,coordinates:shiftLongitudes(feature.geometry.coordinates,offset)}:feature.geometry}))};
   }
-  [-360,0,360].forEach(offset=>{
+  [0].forEach(offset=>{
    const copy=shiftedFeatureCollection(data,offset);
    let worldLayer;
    worldLayer=L.geoJSON(copy,{style:styleFor,onEachFeature:(feature,layer)=>{
