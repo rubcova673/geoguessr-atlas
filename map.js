@@ -44,7 +44,7 @@ function styleFor(feature){
  const sunMode=["sun-all","north","south","equatorial"].includes(filter);
  const lineMode=["line-all","line-white","line-yellow","line-both"].includes(filter);
  const lineCategory=centerLineCategory(c&&c.code);
- const color=lineMode?({white:"#f5f5f5",yellow:"#f3c928",both:"#e4a14b",unknown:"#aebcc0"}[lineCategory]||"#aebcc0"):sunMode?({north:"#d48b32",south:"#0e8b78",equatorial:"#9b75c9",unknown:"#aebcc0"}[sun]||"#aebcc0"):({left:"#1f5a9d",right:"#cf3838",unknown:"#aebcc0"}[side]||"#aebcc0");
+ const color=lineMode?({white:"#2586c7",yellow:"#e6a323",both:"#9562cf",unknown:"#7d8b96"}[lineCategory]||"#7d8b96"):sunMode?({north:"#d48b32",south:"#0e8b78",equatorial:"#9b75c9",unknown:"#aebcc0"}[sun]||"#aebcc0"):({left:"#1f5a9d",right:"#cf3838",unknown:"#aebcc0"}[side]||"#aebcc0");
  const relevant=filter==="all"||filter==="sun-all"||filter==="line-all"||(filter==="left"&&side==="left")||(filter==="right"&&side==="right")||(filter==="north"&&sun==="north")||(filter==="south"&&sun==="south")||(filter==="equatorial"&&sun==="equatorial")||(filter==="line-white"&&lineCategory==="white")||(filter==="line-yellow"&&lineCategory==="yellow")||(filter==="line-both"&&lineCategory==="both");
  return {color:lineMode?"#52656d":"#d7e1e4",weight:lineMode?1.05:.75,fillColor:color,fillOpacity:relevant?0.9:0.48,opacity:1};
 }
@@ -53,7 +53,9 @@ function updateLegend(){
  if(!el)return;
  const sunMode=["sun-all","north","south","equatorial"].includes(filter);
  const lineMode=["line-all","line-white","line-yellow","line-both"].includes(filter);
- el.innerHTML=lineMode?'<span><i class="legend-swatch line-white"></i>Обычно белая центральная линия</span><span><i class="legend-swatch line-yellow"></i>Обычно жёлтая центральная линия</span><span><i class="legend-swatch line-both"></i>Оба цвета в зависимости от ситуации</span><span><i class="legend-swatch unknown"></i>Недостаточно данных</span>':sunMode?'<span><i class="legend-swatch north"></i>Солнце обычно на юге</span><span><i class="legend-swatch south"></i>Солнце обычно на севере</span><span><i class="legend-swatch equatorial"></i>Экваториальная зона</span><span><i class="legend-swatch unknown"></i>Нет точных данных</span>':'<span><i class="legend-swatch right"></i>Правостороннее движение</span><span><i class="legend-swatch left"></i>Левостороннее движение</span><span><i class="legend-swatch unknown"></i>Нет точных данных</span>';
+ if(lineMode){el.innerHTML="";el.style.display="none";return;}
+ el.style.display="flex";
+ el.innerHTML=sunMode?'<span><i class="legend-swatch north"></i>Солнце обычно на юге</span><span><i class="legend-swatch south"></i>Солнце обычно на севере</span><span><i class="legend-swatch equatorial"></i>Экваториальная зона</span><span><i class="legend-swatch unknown"></i>Нет точных данных</span>':'<span><i class="legend-swatch right"></i>Правостороннее движение</span><span><i class="legend-swatch left"></i>Левостороннее движение</span><span><i class="legend-swatch unknown"></i>Нет точных данных</span>';
 }
 function setFilter(next){
  filter=next;
@@ -65,7 +67,7 @@ document.querySelectorAll(".map-filter").forEach(b=>b.addEventListener("click",(
 if(!window.L){
  canvas.innerHTML='<div class="map-loading">Не удалось загрузить библиотеку карты. Проверь доступ к unpkg.com или jsDelivr.</div>';
 }else{
- map=L.map("mapCanvas",{worldCopyJump:false,zoomControl:false,minZoom:1,maxZoom:9,preferCanvas:true,maxBounds:[[-85,-180],[85,180]],maxBoundsViscosity:1}).setView([15,0],1);
+ map=L.map("mapCanvas",{worldCopyJump:false,zoomControl:false,minZoom:2.25,zoomSnap:0.25,zoomDelta:0.5,maxZoom:9,preferCanvas:true,maxBounds:[[-85,-180],[85,180]],maxBoundsViscosity:1}).setView([15,0],2.25);
  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors",maxZoom:9,subdomains:"abc",noWrap:true,bounds:[[-85,-180],[85,180]]}).addTo(map);
  L.control.zoom({position:"topright"}).addTo(map);
  document.querySelector("#zoomIn").onclick=()=>map.zoomIn();
