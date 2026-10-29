@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101a22"><meta name="description" content="GeoGuessr Atlas — интерактивный атлас стран и визуальных признаков для GeoGuessr">
+<title>GeoGuessr Atlas</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./"><span class="brand-icon">◎</span><span>GeoGuessr <b>Atlas</b></span></a><nav><a class="active" href="#map">Карта мира</a><a href="#flags">Флаги</a><a href="#clues">Общие признаки</a></nav><span class="status">WORLD ATLAS · BETA</span></header>
+<main>
+<section class="hero"><div><p class="eyebrow">ГЕОГРАФИЧЕСКИЙ СПРАВОЧНИК</p><h1>Узнавай страну<br><span>по деталям</span></h1><p class="lead">Флаги, дорожные знаки, разметка, движение и мета-признаки Street View — в одном атласе.</p></div><div class="hero-stat"><strong id="countryCount">195+</strong><span>стран и территорий<br>в каталоге</span></div></section>
+<section id="map" class="panel map-panel"><div class="section-head"><div><p class="eyebrow">ИССЛЕДУЙ МИР</p><h2>Интерактивная карта</h2><p class="muted">Приближай колёсиком мыши, перетаскивай карту и выбирай страну.</p></div><div class="map-controls"><button id="zoomIn" aria-label="Приблизить">＋</button><button id="zoomOut" aria-label="Отдалить">−</button><button id="resetMap">Сбросить</button></div></div><div id="mapCanvas"><div class="map-loading">Карта загружается…</div></div><div id="countryDetail" class="country-detail"><span class="detail-mark">◎</span><div><b>Выбери страну на карте</b><p>Откроем её краткий профиль и характерные признаки.</p></div></div></section>
+<section id="flags" class="section"><div class="section-head"><div><p class="eyebrow">КАТАЛОГ</p><h2>Флаги стран мира</h2><p class="muted">Ищи по русскому или английскому названию.</p></div><span id="flagCount" class="count-pill">Загрузка…</span></div><div class="filters"><input id="search" type="search" placeholder="Название страны на русском или English…" aria-label="Поиск страны"><select id="continent"><option value="">Все регионы</option><option>Африка</option><option>Азия</option><option>Европа</option><option>Северная Америка</option><option>Южная Америка</option><option>Океания</option></select></div><div id="flagGrid" class="flag-grid"><p class="muted">Загружаем каталог…</p></div></section>
+<section id="clues" class="section"><div class="section-head"><div><p class="eyebrow">ОБУЧЕНИЕ</p><h2>Общие признаки</h2><p class="muted">Один признак может встречаться в нескольких странах — ищи сочетания.</p></div></div><div class="clue-grid">
+<article class="clue-card"><span class="clue-icon">☀</span><h3>Положение солнца</h3><p>Вне тропиков около солнечного полудня солнце обычно находится на юге в Северном полушарии и на севере в Южном. Сезон и широта важны.</p><small>Признак: ориентировочный</small></article>
+<article class="clue-card"><span class="clue-icon">▤</span><h3>Номерные знаки</h3><p>Цвет и расположение полос, формат номера и шрифт могут сузить поиск. Проверяй стандарты и исключения.</p><small>Признак: зависит от типа номера</small></article>
+<article class="clue-card"><span class="clue-icon">↔</span><h3>Сторона движения</h3><p>Левостороннее движение встречается, например, в Великобритании, Японии, Австралии и Южной Африке.</p><small>Признак: полезен в сочетании с другими</small></article>
+<article class="clue-card"><span class="clue-icon">⌁</span><h3>Дорожная разметка</h3><p>Цвет линий, края дороги и разметка перекрёстков помогают сравнивать страны и регионы.</p><small>Признак: не уникален сам по себе</small></article>
+</div></section>
+<footer><span>GeoGuessr Atlas</span><span>Учебный проект · данные будут постепенно проверяться и расширяться</span></footer>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="app.js"></script>
+</body></html>
