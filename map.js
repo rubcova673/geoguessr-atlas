@@ -6,7 +6,7 @@ const CENTER_LINE_COLORS={
  white:new Set("gb ie nl fr de be lu ch at it es pt pl cz sk hu ro bg gr se dk is ee lv lt ua by ru au il hk".split(" ")),
  both:new Set("jp fi nz ar uy ph".split(" "))
 };
-function centerLineCategory(code){for(const [category,codes] of Object.entries(CENTER_LINE_COLORS)){if(codes.has(String(code||"").toLowerCase()))return category;}return "unknown";}
+function centerLineCategory(code){const c=String(code||"").toLowerCase();if(CENTER_LINE_COLORS.both.has(c))return "both";if(CENTER_LINE_COLORS.yellow.has(c))return "yellow";if(CENTER_LINE_COLORS.white.has(c))return "white";return "unknown";}
 function centerLineLabel(code){return ({yellow:"Обычно жёлтая центральная линия",white:"Обычно белая центральная линия",both:"Цвет зависит от ситуации: встречаются белая и жёлтая",unknown:"Нет достаточно надёжных данных"})[centerLineCategory(code)];}
 const byCode=code=>COUNTRIES.find(c=>c.code===String(code||"").toLowerCase());
 const left=new Set(FALLBACK_DRIVING.leftDriving.map(x=>x.toLowerCase()));
