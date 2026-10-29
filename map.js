@@ -48,16 +48,7 @@ function styleFor(feature){
  const relevant=filter==="all"||filter==="sun-all"||filter==="line-all"||(filter==="left"&&side==="left")||(filter==="right"&&side==="right")||(filter==="north"&&sun==="north")||(filter==="south"&&sun==="south")||(filter==="equatorial"&&sun==="equatorial")||(filter==="line-white"&&lineCategory==="white")||(filter==="line-yellow"&&lineCategory==="yellow")||(filter==="line-both"&&lineCategory==="both");
  return {color:lineMode?"#52656d":"#d7e1e4",weight:lineMode?1.05:.75,fillColor:color,fillOpacity:relevant?0.9:0.48,opacity:1};
 }
-function updateLegend(){
- const el=document.querySelector(".map-legend");
- if(!el)return;
- const sunMode=["sun-all","north","south","equatorial"].includes(filter);
- const lineMode=["line-all","line-white","line-yellow","line-both"].includes(filter);
- if(lineMode){el.innerHTML="";el.style.display="none";return;}
- el.style.display="flex";
- el.innerHTML=sunMode?'<span><i class="legend-swatch north"></i>Солнце обычно на юге</span><span><i class="legend-swatch south"></i>Солнце обычно на севере</span><span><i class="legend-swatch equatorial"></i>Экваториальная зона</span><span><i class="legend-swatch unknown"></i>Нет точных данных</span>':'<span><i class="legend-swatch right"></i>Правостороннее движение</span><span><i class="legend-swatch left"></i>Левостороннее движение</span><span><i class="legend-swatch unknown"></i>Нет точных данных</span>';
-}
-function setFilter(next){
+function updateLegend(){}\nfunction setFilter(next){
  filter=next;
  document.querySelectorAll(".map-filter").forEach(b=>{const active=b.dataset.filter===filter;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
  geoLayers.forEach(layer=>layer.setStyle(styleFor));
