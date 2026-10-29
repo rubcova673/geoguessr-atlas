@@ -67,12 +67,13 @@ document.querySelectorAll(".map-filter").forEach(b=>b.addEventListener("click",(
 if(!window.L){
  canvas.innerHTML='<div class="map-loading">Не удалось загрузить библиотеку карты. Проверь доступ к unpkg.com или jsDelivr.</div>';
 }else{
- map=L.map("mapCanvas",{worldCopyJump:false,zoomControl:false,minZoom:2.25,zoomSnap:0.25,zoomDelta:0.5,maxZoom:9,preferCanvas:true,maxBounds:[[-85,-180],[85,180]],maxBoundsViscosity:1}).setView([15,0],2.25);
+ map=L.map("mapCanvas",{worldCopyJump:false,zoomControl:false,minZoom:0.5,zoomSnap:0.25,zoomDelta:0.5,maxZoom:9,preferCanvas:true,maxBounds:[[-85,-180],[85,180]],maxBoundsViscosity:1}).setView([15,0],1);
  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors",maxZoom:9,subdomains:"abc",noWrap:true,bounds:[[-85,-180],[85,180]]}).addTo(map);
  L.control.zoom({position:"topright"}).addTo(map);
  document.querySelector("#zoomIn").onclick=()=>map.zoomIn();
  document.querySelector("#zoomOut").onclick=()=>map.zoomOut();
- document.querySelector("#resetMap").onclick=()=>{map.closePopup();map.setView([15,0],1);setFilter("all");};
+ const worldViewBounds=[[-60,-180],[80,180]];
+ document.querySelector("#resetMap").onclick=()=>{map.closePopup();map.fitBounds(worldViewBounds,{padding:[8,8]});setFilter("all");};
  fetch("./data/world.geojson").then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json();}).then(data=>{
   document.querySelector(".map-loading")?.remove();
   function shiftLongitudes(value,offset){
@@ -102,5 +103,6 @@ if(!window.L){
    geoLayers.push(worldLayer);
   });
   setFilter("all");
+  map.fitBounds(worldViewBounds,{padding:[8,8]});
  }).catch(err=>{console.error("GeoJSON map load failed",err);canvas.innerHTML='<div class="map-loading">Не загрузились границы стран. Обнови страницу или проверь доступ к data/world.geojson.</div>';});
 }
